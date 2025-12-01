@@ -1,0 +1,26 @@
+<h2>Zarządzanie sesjami</h2>
+
+<h3>Id sesji</h3>
+<pre><%= sessionId %></pre>
+
+<h3>Dane sesji</h3>
+<pre><%= JSON.stringify(sessionData || {}, null, 2) %></pre>
+
+<h3>Dodaj / ustaw wartość w sesji</h3>
+<form action="/sessions/set" method="post">
+  <label>Klucz: <input name="key" /></label>
+  <label>Wartość: <input name="value" /></label>
+  <button type="submit">Zapisz</button>
+</form>
+
+<h3>Usuń wartość z sesji</h3>
+<form action="/sessions/delete" method="post">
+  <label>Klucz: <input name="key" /></label>
+  <button type="submit">Usuń</button>
+</form>
+
+<form action="/sessions/destroy" method="post">
+  <button type="submit">Zniszcz sesję</button>
+</form>
+
+<p><a href="/sessions/counter">Liczniki wizyt (JSON)</a></p>

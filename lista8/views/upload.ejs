@@ -1,0 +1,16 @@
+<h2>Przesyłanie plików</h2>
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <label
+    >Wybierz plik:
+    <input type="file" name="file" />
+  </label>
+  <button type="submit">Wyślij</button>
+</form>
+
+<% if (typeof error !== 'undefined' && error) { %>
+<p style="color: red"><%= error %></p>
+<% } %> <% if (typeof success !== 'undefined' && success) { %>
+<p style="color: green"><%= success %></p>
+<% if (typeof fileInfo !== 'undefined' && fileInfo) { %>
+<pre><%= JSON.stringify(fileInfo, null, 2) %></pre>
+<% } %> <% } %>

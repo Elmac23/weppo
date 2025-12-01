@@ -1,0 +1,22 @@
+<h2>Formularze — include z parametrami</h2>
+
+<form action="/forms" method="post">
+  <fieldset>
+    <legend>Wybierz kolor (radio)</legend>
+    <%- include('partials/radio', { options: radioOptions, selected:
+    selectedColor }) %>
+  </fieldset>
+
+  <fieldset>
+    <legend>Umiejętności (checkbox)</legend>
+    <%- include('partials/checkbox', { options: checkboxOptions, selected:
+    selectedSkills }) %>
+  </fieldset>
+
+  <button type="submit">Wyślij</button>
+</form>
+
+<p>
+  Wybrane z query: kolor = <%= selectedColor || '-' %>, skills = <%=
+  selectedSkills && selectedSkills.length ? selectedSkills.join(', ') : '-' %>
+</p>

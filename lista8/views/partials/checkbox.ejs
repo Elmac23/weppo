@@ -1,0 +1,8 @@
+<% options.forEach(function(opt){ %>
+<label>
+  <input type="checkbox" name="<%= opt.name %>" value="<%= opt.value %>" <%=
+  (Array.isArray(selected) && selected.includes(opt.value)) ? 'checked' : '' %>
+  /> <%= opt.label %>
+</label>
+<br />
+<% }) %>

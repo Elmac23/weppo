@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+    <style></style>
+  </head>
+  <body>
+    <h1>Student Results</h1>
+
+    <table id="resultsTable">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+
+    <div id="summary" style="margin-top: 20px"></div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const tableBody = document.getElementById("tableBody");
+      const summaryDiv = document.getElementById("summary");
+
+      const fieldNames = {
+        name: "Name",
+        lastname: "Lastname",
+        exercise: "Class",
+        one: "Exercise 1",
+        two: "Exercise 2",
+        three: "Exercise 3",
+        four: "Exercise 4",
+        five: "Exercise 5",
+        six: "Exercise 6",
+        seven: "Exercise 7",
+        eight: "Exercise 8",
+        nine: "Exercise 9",
+        ten: "Exercise 10",
+      };
+
+      let totalPoints = 0;
+      let exerciseCount = 0;
+
+      for (const [key, value] of urlParams.entries()) {
+        const row = document.createElement("tr");
+        const fieldCell = document.createElement("td");
+        const valueCell = document.createElement("td");
+
+        fieldCell.textContent = fieldNames[key] || key;
+        valueCell.textContent = value || 0;
+
+        row.appendChild(fieldCell);
+        row.appendChild(valueCell);
+        tableBody.appendChild(row);
+
+        if (
+          key !== "name" &&
+          key !== "lastname" &&
+          key !== "exercise" &&
+          value
+        ) {
+          const points = parseInt(value) || 0;
+          totalPoints += points;
+          exerciseCount++;
+        }
+      }
+      if (exerciseCount > 0) {
+        summaryDiv.innerHTML = `
+          <h2>Summary</h2>
+          <p><strong>Total Points:</strong> ${totalPoints}</p>
+        `;
+      }
+    </script>
+  </body>
+</html>

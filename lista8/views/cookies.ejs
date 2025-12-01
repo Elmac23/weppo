@@ -1,0 +1,34 @@
+<h2>Zarządzanie cookies</h2>
+
+<p>
+  Przeglądarka obsługuje cookies: <%= typeof cookiesSupported !== 'undefined' &&
+  cookiesSupported ? 'tak' : 'nie (ustawiono testowe cookie)' %>
+</p>
+
+<h3>Aktualne cookies</h3>
+<ul>
+  <% if (typeof cookies !== 'undefined' && Object.keys(cookies).length) { %> <%
+  Object.keys(cookies).forEach(function(name){ %>
+  <li><strong><%= name %></strong>: <%= cookies[name] %></li>
+  <% }) %> <% } else { %>
+  <li>Brak ciasteczek</li>
+  <% } %>
+</ul>
+
+<p>
+  <a href="/cookies/test">Uruchom test obsługi cookie (GET /cookies/test)</a>
+</p>
+
+<h3>Dodaj cookie</h3>
+<form action="/cookies/set" method="post">
+  <label>Nazwa: <input name="name" /></label>
+  <label>Wartość: <input name="value" /></label>
+  <label>MaxAge (s): <input name="maxAge" /></label>
+  <button type="submit">Ustaw</button>
+</form>
+
+<h3>Usuń cookie</h3>
+<form action="/cookies/delete" method="post">
+  <label>Nazwa: <input name="name" /></label>
+  <button type="submit">Usuń</button>
+</form>

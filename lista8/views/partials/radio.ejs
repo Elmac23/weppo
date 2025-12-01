@@ -1,0 +1,7 @@
+<% options.forEach(function(opt){ %>
+<label>
+  <input type="radio" name="<%= opt.name %>" value="<%= opt.value %>" <%=
+  (selected === opt.value) ? 'checked' : '' %> /> <%= opt.label %>
+</label>
+<br />
+<% }) %>
