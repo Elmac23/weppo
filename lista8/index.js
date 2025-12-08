@@ -14,7 +14,6 @@ const __dirname = path.dirname(__filename);
 const FileStore = FileStoreSession(session);
 const app = express();
 
-// Konfiguracja multer do przesyłania plików
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -26,12 +25,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Konfiguracja sesji z file store
 app.use(
   session({
     store: new FileStore({
@@ -40,19 +37,16 @@ app.use(
     secret: "moj-tajny-klucz-sesji",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }, // 24 godziny
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }, // 24h
   })
 );
 
-// Konfiguracja widoków EJS i layoutów
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.set("layout", "layout"); // domyślny layout
+app.set("layout", "layout");
 
-// Middleware do sprawdzania obsługi cookies
 app.use((req, res, next) => {
-  // Sprawdzamy czy przeglądarka obsługuje cookies
   if (!req.cookies.cookieTest) {
     res.cookie("cookieTest", "test", { maxAge: 900000 });
     req.cookiesSupported = false;
@@ -61,8 +55,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-// Strona główna - menu z wszystkimi funkcjami
 app.get("/", (req, res) => {
   res.render("index", {
     title: "Lista 8 - Wszystkie funkcje",
@@ -71,7 +63,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// 1. PRZESYŁANIE PLIKÓW
 app.get("/upload", (req, res) => {
   res.render("upload", { title: "Przesyłanie plików" });
 });
@@ -96,7 +87,6 @@ app.post("/upload", upload.single("file"), (req, res) => {
   });
 });
 
-// 2. LAYOUTY - przykład różnych layoutów
 app.get("/layout-demo", (req, res) => {
   res.render("layout-demo", {
     title: "Demo layoutów",
@@ -104,7 +94,6 @@ app.get("/layout-demo", (req, res) => {
   });
 });
 
-// 3. PARAMETRY DO WIDOKÓW INCLUDE - formularze radio i checkbox
 app.get("/forms", (req, res) => {
   const radioOptions = [
     { value: "red", label: "Czerwony", name: "color" },
@@ -140,7 +129,6 @@ app.post("/forms", (req, res) => {
   );
 });
 
-// 4. DOWNLOAD PLIKU - Content-Disposition attachment
 app.get("/download", (req, res) => {
   res.render("download", { title: "Download plików" });
 });
@@ -171,7 +159,6 @@ app.get("/download/json", (req, res) => {
   res.send(JSON.stringify(jsonData, null, 2));
 });
 
-// 5. COOKIES
 app.get("/cookies", (req, res) => {
   res.render("cookies", {
     title: "Zarządzanie Cookies",
@@ -197,7 +184,6 @@ app.post("/cookies/delete", (req, res) => {
 });
 
 app.get("/cookies/test", (req, res) => {
-  // Test sprawdzający czy przeglądarka obsługuje cookies
   if (req.cookies.testCookie) {
     res.json({
       cookiesSupported: true,
@@ -213,7 +199,6 @@ app.get("/cookies/test", (req, res) => {
   }
 });
 
-// 6. SESJE
 app.get("/sessions", (req, res) => {
   res.render("sessions", {
     title: "Zarządzanie Sesjami",
@@ -244,12 +229,11 @@ app.post("/sessions/destroy", (req, res) => {
     if (err) {
       return res.redirect("/sessions");
     }
-    res.clearCookie("connect.sid"); // domyślna nazwa cookie sesji
+    res.clearCookie("connect.sid");
     res.redirect("/sessions");
   });
 });
 
-// Counter w sesji - demonstracja
 app.get("/sessions/counter", (req, res) => {
   if (!req.session.visitCount) {
     req.session.visitCount = 1;
